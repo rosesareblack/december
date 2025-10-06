@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Colors for output
 RED='\033[0;31m'
@@ -26,17 +25,17 @@ print_check() {
 
 print_success() {
     echo -e "${GREEN}✓${NC} $1"
-    ((CHECKS_PASSED++))
+    CHECKS_PASSED=$((CHECKS_PASSED + 1))
 }
 
 print_error() {
     echo -e "${RED}✗${NC} $1"
-    ((CHECKS_FAILED++))
+    CHECKS_FAILED=$((CHECKS_FAILED + 1))
 }
 
 print_warning() {
     echo -e "${YELLOW}⚠${NC}  $1"
-    ((CHECKS_WARNED++))
+    CHECKS_WARNED=$((CHECKS_WARNED + 1))
 }
 
 # Start pre-flight checks
@@ -67,11 +66,14 @@ else
 fi
 
 print_check "Checking TypeScript version..."
-if npx tsc --version &> /dev/null; then
-    TS_VERSION=$(npx tsc --version)
+if command -v tsc &> /dev/null; then
+    TS_VERSION=$(tsc --version)
+    print_success "$TS_VERSION available"
+elif [ -f "frontend/node_modules/.bin/tsc" ]; then
+    TS_VERSION=$(cd frontend && npx tsc --version)
     print_success "$TS_VERSION available"
 else
-    print_error "TypeScript not found"
+    print_warning "TypeScript not found globally (will be available after dependency install)"
 fi
 
 # 2. Dependency Manager & Dependencies
@@ -145,6 +147,8 @@ fi
 cd ..
 
 print_check "Type checking backend..."
+# Copy config file to backend (required for type checking)
+cp config.ts backend/config.ts 2>/dev/null || print_warning "config.ts not found in root"
 cd backend
 if npx tsc --noEmit > /dev/null 2>&1; then
     print_success "Backend type check passed"
