@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# Run lint and type-check on frontend
+cd frontend
+npm run lint --max-warnings 0
+npm run type-check
+
+echo "✅ Pre-commit checks passed!"
