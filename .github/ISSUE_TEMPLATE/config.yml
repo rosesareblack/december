@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/ntegrals/december/discussions
+    about: Join community discussions, share ideas, and get help from other users
+  - name: 📚 Documentation
+    url: https://github.com/ntegrals/december#readme
+    about: Read the documentation for setup guides and tutorials
+  - name: 🚨 Security Issue
+    url: https://github.com/ntegrals/december/security/advisories/new
+    about: Report security vulnerabilities privately

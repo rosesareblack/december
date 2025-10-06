@@ -496,7 +496,7 @@ export const WorkspaceDashboard = ({
         <div className="relative z-10">
           <div className="prose prose-sm prose-invert max-w-none [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white [&_strong]:text-white">
             <p className="mb-2">
-              👋 Welcome to your Next.js project! I'm here to help you build,
+              👋 Welcome to your Next.js project! I&apos;m here to help you build,
               modify, and deploy your application.
             </p>
             <p className="mb-2">I can help you with:</p>
@@ -508,7 +508,7 @@ export const WorkspaceDashboard = ({
               <li>Optimizing performance</li>
             </ul>
             <p className="mb-0">
-              Just describe what you'd like to build or change, and I'll help
+              Just describe what you&apos;d like to build or change, and I&apos;ll help
               you make it happen! 🚀
             </p>
           </div>
