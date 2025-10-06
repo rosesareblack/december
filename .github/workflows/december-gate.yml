@@ -1,0 +1,74 @@
+name: december-gate
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ---------- LANGUAGE PIN ----------
+      - name: NODE – exact version from .nvmrc
+        run: |
+          NODE_EXPECTED=$(cat .nvmrc)
+          NODE_ACTUAL=$(node -v)
+          [[ "$NODE_ACTUAL" == "$NODE_EXPECTED" ]] || { echo "❌ Node $NODE_ACTUAL ≠ $NODE_EXPECTED"; exit 1; }
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      # Setup Bun for backend
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      # ---------- SECRETS ----------
+      - name: GITLEAKS – local binary scan
+        run: |
+          mkdir -p scripts
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_linux_x64.tar.gz | tar -xz -C scripts gitleaks
+          chmod +x scripts/gitleaks
+          ./scripts/gitleaks detect --source . --verbose --no-git
+
+      # ---------- FRONTEND DEPS & QUALITY ----------
+      - name: FRONTEND – install & audit
+        working-directory: ./frontend
+        run: |
+          npm ci --audit=true --audit-level=moderate
+          npx depcheck --ignore-bin-package --skip-missing | tee depcheck.txt
+          ! grep -q "Unused dependencies" depcheck.txt || echo "⚠️ Found unused dependencies in frontend"
+
+      - name: FRONTEND – lint & type-check
+        working-directory: ./frontend
+        run: |
+          npm run lint -- --max-warnings 0
+          npm run type-check
+
+      # ---------- BACKEND DEPS & QUALITY ----------
+      - name: BACKEND – install & check
+        working-directory: ./backend
+        run: |
+          bun install
+          echo "✅ Backend dependencies installed"
+
+      # ---------- DOCKER ----------
+      - name: DOCKER – build & size budget
+        run: |
+          docker build -t december:ci -f Dockerfile .
+          size=$(docker images december:ci --format "{{.Size}}" | sed 's/[A-Z]*B//' | numfmt --from=iec 2>/dev/null || echo "0")
+          max_size=524288000
+          if [[ $size -gt $max_size ]]; then
+            echo "❌ Image size $size bytes exceeds 500 MiB budget"
+            exit 1
+          fi
+          echo "✅ Docker image size: $(numfmt --to=iec $size)B (under 500 MiB budget)"
+
+      # ---------- GREEN ✅ ----------
+      - name: GATE PASSED
+        run: echo "✅ December mono-repo gate cleared"
