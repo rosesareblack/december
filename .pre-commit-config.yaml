@@ -1,0 +1,82 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+# Installation: pip install pre-commit && pre-commit install
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--unsafe]  # Allow custom YAML tags
+      - id: check-json
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master]
+
+  # Prettier for formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown]
+        additional_dependencies:
+          - prettier@3.4.2
+        exclude: |
+          (?x)^(
+            package-lock\.json|
+            bun\.lock|
+            .*\.min\.js|
+            .*\.min\.css
+          )$
+
+  # ESLint for JavaScript/TypeScript
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.17.0
+    hooks:
+      - id: eslint
+        files: \.(js|jsx|ts|tsx)$
+        types: [file]
+        additional_dependencies:
+          - eslint@9.17.0
+          - eslint-config-next@15.3.2
+          - "@eslint/eslintrc@3.2.0"
+          - typescript@5.7.2
+
+  # TypeScript type checking
+  - repo: local
+    hooks:
+      - id: tsc-frontend
+        name: TypeScript Type Check (Frontend)
+        entry: bash -c 'cd frontend && npx tsc --noEmit'
+        language: system
+        pass_filenames: false
+        files: ^frontend/.*\.(ts|tsx)$
+      - id: tsc-backend
+        name: TypeScript Type Check (Backend)
+        entry: bash -c 'cd backend && npx tsc --noEmit'
+        language: system
+        pass_filenames: false
+        files: ^backend/.*\.ts$
+
+  # Secrets detection
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.22.1
+    hooks:
+      - id: gitleaks
+
+  # Shell script validation
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: [--severity=warning]

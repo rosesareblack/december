@@ -88,6 +88,33 @@
 
 You can test the December here: [https://december.ai](https://december.ai) -->
 
+## 🚀 Pre-Flight Checklist
+
+For contributors and developers looking to ensure code quality before committing, we provide a comprehensive pre-flight checklist system:
+
+- **📋 [PREFLIGHT.md](PREFLIGHT.md)** - Complete checklist documentation with step-by-step verification instructions
+- **🤖 `./preflight.sh`** - Automated script to run all checks with one command
+- **⚙️ Configuration Files** - Pre-configured `.editorconfig`, `.pre-commit-config.yaml`, and GitHub Actions CI workflow
+
+### Quick Start for Contributors
+
+Run the automated pre-flight check before your first commit:
+
+```bash
+./preflight.sh
+```
+
+This will verify:
+- ✅ Node.js and TypeScript versions
+- ✅ Dependencies installation and lockfiles
+- ✅ Linting and formatting
+- ✅ Type checking (frontend & backend)
+- ✅ Build process
+- ✅ Configuration files
+- ✅ Security checks for secrets
+
+For manual checks and detailed instructions, see [PREFLIGHT.md](PREFLIGHT.md).
+
 ## Motivation
 
 AI-powered development platforms have revolutionized how we build applications. They allow developers to go from idea to working application in seconds, but most solutions are closed-source or require expensive subscriptions.

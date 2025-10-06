@@ -1,0 +1,15 @@
+# Ignore backend directory
+backend/
+
+# Ignore non-frontend files
+start.sh
+preflight.sh
+PREFLIGHT.md
+CONTRIBUTING.md
+
+# Ignore git files
+.git/
+.github/
+
+# Ignore pre-commit
+.pre-commit-config.yaml
