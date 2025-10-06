@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck - TODO: Fix type issues with container state management and streaming responses
 "use client";
 
 import { useEffect, useRef, useState } from "react";

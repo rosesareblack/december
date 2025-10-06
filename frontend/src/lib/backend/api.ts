@@ -167,7 +167,7 @@ export function sendChatMessageStream(
   onError?: (error: string) => void,
   onComplete?: () => void
 ): () => void {
-  let abortController = new AbortController();
+  const abortController = new AbortController();
 
   fetch(`${API_BASE_URL}/chat/${containerId}/messages`, {
     method: "POST",

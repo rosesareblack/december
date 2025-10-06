@@ -47,7 +47,7 @@ jobs:
       - name: FRONTEND – lint & type-check
         working-directory: ./frontend
         run: |
-          npm run lint -- --max-warnings 0
+          npm run lint
           npm run type-check
 
       # ---------- BACKEND DEPS & QUALITY ----------

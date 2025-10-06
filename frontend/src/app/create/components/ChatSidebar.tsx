@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck - TODO: Fix type issues with chat history and message handling
 
 import { ChatInput } from "./ChatInput";
 import { ChatMessage } from "./ChatMessage";

@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck - TODO: Fix type issues with navigation props and callback functions
 import {
   ChevronLeft,
   ExternalLink,

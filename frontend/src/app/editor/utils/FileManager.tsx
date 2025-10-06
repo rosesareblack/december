@@ -27,7 +27,7 @@ export function buildFileTree(data: any): Directory {
   const files = [...data.modules];
   const cache = new Map<string, Directory | File>();
 
-  let rootDir: Directory = {
+  const rootDir: Directory = {
     id: "0",
     name: "root",
     parentId: undefined,
@@ -38,7 +38,7 @@ export function buildFileTree(data: any): Directory {
   };
 
   dirs.forEach((item) => {
-    let dir: Directory = {
+    const dir: Directory = {
       id: item.shortid,
       name: item.title,
       parentId: item.directory_shortid === null ? "0" : item.directory_shortid,
@@ -52,7 +52,7 @@ export function buildFileTree(data: any): Directory {
   });
 
   files.forEach((item) => {
-    let file: File = {
+    const file: File = {
       id: item.shortid,
       name: item.title,
       parentId: item.directory_shortid === null ? "0" : item.directory_shortid,
@@ -63,7 +63,7 @@ export function buildFileTree(data: any): Directory {
     cache.set(file.id, file);
   });
 
-  cache.forEach((value, key) => {
+  cache.forEach((value, _key) => {
     if (value.parentId === "0") {
       if (value.type === Type.DIRECTORY) rootDir.dirs.push(value as Directory);
       else rootDir.files.push(value as File);
