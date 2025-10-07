@@ -4,3 +4,44 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "App"
+
+[[workflows.workflow]]
+name = "App"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bash start.sh"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[ports]]
+localPort = 4000
+externalPort = 3000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 39673
+externalPort = 3001
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cp config.ts backend/config.ts && cd backend && bun src/index.ts & cd frontend && npm run start"]
+build = ["bash", "-c", "cd frontend && npm run build"]
