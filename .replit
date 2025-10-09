@@ -37,10 +37,6 @@ externalPort = 3000
 localPort = 5000
 externalPort = 80
 
-[[ports]]
-localPort = 39673
-externalPort = 3001
-
 [deployment]
 deploymentTarget = "autoscale"
 run = ["bash", "-c", "cp config.ts backend/config.ts && cd backend && bun src/index.ts & cd frontend && npm run start"]
