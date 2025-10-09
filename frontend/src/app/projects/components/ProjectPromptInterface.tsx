@@ -4,7 +4,7 @@ import { Paperclip, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { createContainer } from "../../../lib/backend/api";
+import { createContainer } from "../../../lib/services/api";
 
 interface ProjectPromptInterfaceProps {
   selectedTemplate: string;

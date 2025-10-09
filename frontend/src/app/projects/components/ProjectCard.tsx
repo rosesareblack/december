@@ -3,11 +3,19 @@
 import { Code, ExternalLink, Play, Square, Trash2 } from "lucide-react";
 import { useState } from "react";
 import {
-  Container,
   deleteContainer,
   startContainer,
   stopContainer,
-} from "../../../lib/backend/api";
+} from "../../../lib/services/api";
+
+interface Container {
+  id: string;
+  name: string;
+  status: string;
+  created: string;
+  url: string | null;
+  assignedPort?: number;
+}
 
 interface ProjectCardProps {
   container: Container;

@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Container, getContainers } from "../../../lib/backend/api";
+import { getContainers } from "../../../lib/services/api";
+
+interface Container {
+  id: string;
+  name: string;
+  status: string;
+  created: string;
+  url: string | null;
+}
 
 interface LivePreviewProps {
   containerId: string;

@@ -3,12 +3,20 @@
 import { Calendar, MoreHorizontal, Play, Square, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
-  Container,
   deleteContainer,
   getContainers,
   startContainer,
   stopContainer,
-} from "../../../lib/backend/api";
+} from "../../../lib/services/api";
+
+interface Container {
+  id: string;
+  name: string;
+  status: string;
+  created: string;
+  url: string | null;
+  assignedPort?: number;
+}
 
 export const ProjectsGrid = () => {
   const [containers, setContainers] = useState<Container[]>([]);
