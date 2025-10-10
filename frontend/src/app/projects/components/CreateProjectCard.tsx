@@ -2,7 +2,7 @@
 
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { createContainer } from "../../../lib/backend/api";
+import { createContainer } from "../../../lib/services/api";
 
 interface CreateProjectCardProps {
   onProjectCreated: () => void;
