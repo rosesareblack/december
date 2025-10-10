@@ -15,6 +15,7 @@ import {
   Smartphone,
   Terminal,
   Upload,
+  Rocket,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -36,6 +37,7 @@ import { ChatInput } from "../../create/components/ChatInput";
 import { ChatMessage } from "../../create/components/ChatMessage";
 import CodeEditor from "../../editor/CodeEditor";
 import { LivePreview } from "./LivePreview";
+import { DeploymentDashboard } from "./DeploymentDashboard";
 
 interface WorkspaceDashboardProps {
   containerId: string;
@@ -58,6 +60,7 @@ export const WorkspaceDashboard = ({
   );
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [showDeploymentDashboard, setShowDeploymentDashboard] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const streamCancelRef = useRef<(() => void) | null>(null);
@@ -648,16 +651,12 @@ export const WorkspaceDashboard = ({
             </button>
 
             <button
-              onClick={() =>
-                toast("This feature is coming soon!", {
-                  icon: "🙌",
-                  duration: 1000,
-                })
-              }
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white text-black hover:bg-gray-100 rounded-md text-xs font-medium transition-all shadow-sm hover:shadow-lg"
+              onClick={() => setShowDeploymentDashboard(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-md text-xs font-medium transition-all shadow-lg hover:shadow-xl"
+              title="Deployment & Quality Dashboard"
             >
-              <Globe className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Deploy</span>
+              <Rocket className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Deploy & Audit</span>
             </button>
           </div>
         </div>
@@ -762,6 +761,14 @@ export const WorkspaceDashboard = ({
           </div>
         </div>
       </div>
+      
+      {/* Deployment Dashboard Modal */}
+      {showDeploymentDashboard && (
+        <DeploymentDashboard
+          projectId={containerId}
+          onClose={() => setShowDeploymentDashboard(false)}
+        />
+      )}
     </div>
   );
 };
